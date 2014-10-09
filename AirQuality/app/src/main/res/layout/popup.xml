@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@android:color/background_light">
+    <LinearLayout
+        android:layout_width="380dp"
+        android:layout_height="280dp"
+        android:layout_margin="1dp"
+        android:background="@android:color/darker_gray"
+        android:weightSum="1"
+        android:orientation="vertical">
+        >
+
+        <EditText
+            android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewPlainTextInput"
+            android:hint="City you are in."
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextPlainTextInput"
+            android:hint="Country you are in."
+            android:singleLine="true"
+            android:layout_gravity="bottom" />
+
+        <EditText
+            android:id="@+id/street"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextPlainTextInput"
+            android:hint="Street you are on."
+            android:singleLine="true"
+            android:layout_gravity="bottom" />
+
+        <EditText
+            android:id="@+id/zip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextPlainTextInput"
+            android:hint="Postal Code."
+            android:singleLine="true"
+            android:layout_gravity="bottom" />
+
+        <Button
+            android:id="@+id/enter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editTextDecimalNumberInput"
+            android:text="Save"
+            android:clickable="true"
+            android:onClick="userInputLocation" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editTextDecimalNumberInput"
+            android:text="Cancel"
+            android:clickable="true" />
+
+
+
+
+    </LinearLayout>
+</LinearLayout>
