@@ -1,5 +1,3 @@
-
-
 public class LocationDataPoint{
     
     private double dbXCoord;
