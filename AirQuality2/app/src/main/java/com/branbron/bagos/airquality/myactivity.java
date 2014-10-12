@@ -1,6 +1,7 @@
 package com.branbron.bagos.airquality;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +12,9 @@ public class myactivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_myactivity);
+        // setContentView(R.layout.activity_myactivity);
+        Intent myintent = new Intent(this, GPS.class);
+        startActivity(myintent);
     }
 
 

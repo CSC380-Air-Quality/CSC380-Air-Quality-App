@@ -10,7 +10,7 @@
         android:background="@android:color/darker_gray"
         android:weightSum="1"
         android:orientation="vertical">
-        >
+
 
         <EditText
             android:id="@+id/city"
