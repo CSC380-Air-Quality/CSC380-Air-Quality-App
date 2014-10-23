@@ -27,10 +27,10 @@ import java.util.Locale;
 public class GPS extends Activity{
 
     private GPS location;
-    private String cityName;
-    private String country;
-    private String street;
-    private String postalCode;
+    private String cityName = "";
+    private String country = "";
+    private String street = "";
+    private String postalCode = "";
     private double lat;
     private double lng;
 
@@ -141,10 +141,18 @@ public class GPS extends Activity{
         EditText count = (EditText) findViewById(R.id.country);
         EditText strt = (EditText) findViewById(R.id.street);
         EditText zp = (EditText) findViewById(R.id.zip);
-        cityName = city.getText().toString();
-        country = count.getText().toString();
-        street = strt.getText().toString();
-        postalCode = zp.getText().toString();
+        if(city != null){
+            cityName = city.getText().toString();
+        }
+        if(count != null){
+            country = count.getText().toString();
+        }
+        if(strt != null){
+            street = strt.getText().toString();
+        }
+        if(zp != null){
+            postalCode = zp.getText().toString();
+        }
         location = new GPS(cityName, country, street, postalCode, 91, 191);
 
     }
