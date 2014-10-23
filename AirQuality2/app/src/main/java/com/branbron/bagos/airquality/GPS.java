@@ -49,6 +49,7 @@ public class GPS extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        if (!onGPS()) {
+
             //Have option to enter in location information
             setContentView(R.layout.activity_myactivity);
             final Button openInputWindow = (Button) findViewById(R.id.openuserinput);
@@ -58,15 +59,8 @@ public class GPS extends Activity{
                     LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
                     View popupView = layoutInflater.inflate(R.layout.popup, null);
                     final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    Button enter = (Button) popupView.findViewById(R.id.enter);
-                    enter.setOnClickListener(new Button.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow.dismiss();
-                        }
-                    });
-                    Button cancel = (Button) popupView.findViewById(R.id.cancel);
-                    cancel.setOnClickListener(new Button.OnClickListener() {
+                    Button done = (Button) popupView.findViewById(R.id.done);
+                    done.setOnClickListener(new Button.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
