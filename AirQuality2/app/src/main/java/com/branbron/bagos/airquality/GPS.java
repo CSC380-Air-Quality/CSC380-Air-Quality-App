@@ -48,7 +48,7 @@ public class GPS extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!onGPS()) {
+       if (!onGPS()) {
             //Have option to enter in location information
             setContentView(R.layout.activity_myactivity);
             final Button openInputWindow = (Button) findViewById(R.id.openuserinput);
@@ -124,7 +124,7 @@ public class GPS extends Activity{
                     //TODO Auto-generated method stub
                 }
             };
-            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 50, locListener);
+            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 50, locListener);
         }
     }
 
