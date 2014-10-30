@@ -20,6 +20,13 @@
             android:text="Enter Your Own Location"
             android:clickable="true" />
 
+        <Button
+            android:id="@+id/openMap"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Open Map"
+            android:clickable="true" />
+
     </LinearLayout>
 
 

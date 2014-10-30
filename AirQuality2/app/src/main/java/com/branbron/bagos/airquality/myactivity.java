@@ -14,7 +14,8 @@ public class myactivity extends Activity {
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_myactivity);
         Intent myintent = new Intent(this, GPS.class);
-        startActivity(myintent);
+        Intent mapintent = new Intent(this, MAP.class);
+        startActivity(mapintent);
     }
 
 
