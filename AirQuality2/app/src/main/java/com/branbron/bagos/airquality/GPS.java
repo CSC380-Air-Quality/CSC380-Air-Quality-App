@@ -33,6 +33,8 @@ public class GPS extends Activity{
     private String postalCode = "";
     private double lat;
     private double lng;
+    private int miliSeconds = 60000;
+    private int distance = 50;
 
     public GPS(){}
 
@@ -118,8 +120,16 @@ public class GPS extends Activity{
                     //TODO Auto-generated method stub
                 }
             };
-            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 50, locListener);
+            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, miliSeconds, distance, locListener);
         }
+    }
+
+    public void setTime(int r){
+        miliSeconds = r;
+    }
+
+    public void setDistance(int r){
+        distance = r;
     }
 
     //Checks if the GPS is on or off
