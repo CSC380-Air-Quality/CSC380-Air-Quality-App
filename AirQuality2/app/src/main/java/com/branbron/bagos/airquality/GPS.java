@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
