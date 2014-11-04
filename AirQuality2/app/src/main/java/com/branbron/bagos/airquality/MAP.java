@@ -55,19 +55,21 @@ public class MAP extends FragmentActivity {
             // Enabling MyLocation Layer of Google Map
             googleMap.setMyLocationEnabled(true);
             // LocationManager object from LOCATION_SERVICE
-            final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             // Creating a criteria object to retrieve provider
             Criteria criteria = new Criteria();
             // name of the best provider
-            final String provider = locationManager.getBestProvider(criteria, true);
+            String provider = locationManager.getBestProvider(criteria, true);
             // Get most current location
             final Location spot = locationManager.getLastKnownLocation(provider);
-            final LocationListener locationListener = new LocationListener() {
+
+            LocationListener locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     //draw marker on change
                     drawMarker(spot);
                 }
+
 
                 @Override
                 public void onStatusChanged(String s, int i, Bundle bundle) {
@@ -85,6 +87,7 @@ public class MAP extends FragmentActivity {
                 }
 
             };
+
             locationManager.requestLocationUpdates(provider, 600000, 10, locationListener);
 
         }
