@@ -36,8 +36,12 @@ public class MAP extends FragmentActivity {
             @Override
             public void onClick(View Arg0) {
                 setContentView(R.layout.map);
+                runMap();
             }
         });
+    }
+
+    private void runMap(){
         //Get google play availability
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
         //Check Status
@@ -92,6 +96,7 @@ public class MAP extends FragmentActivity {
 
         }
     }
+
     private void drawMarker(Location loc){
         googleMap.clear();
         LatLng currentSpot = new LatLng(loc.getLatitude(),loc.getLongitude());
