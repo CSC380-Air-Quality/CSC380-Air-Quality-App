@@ -23,9 +23,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MAP extends FragmentActivity {
 
-    GoogleMap googleMap;
+    private GoogleMap googleMap;
 
-    GPS inst;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +64,12 @@ public class MAP extends FragmentActivity {
             Criteria criteria = new Criteria();
             // name of the best provider
             String provider = locationManager.getBestProvider(criteria, true);
-            // Get most current location
-            final Location spot = locationManager.getLastKnownLocation(provider);
 
             LocationListener locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     //draw marker on change
-                    drawMarker(spot);
+                    drawMarker(location);
                 }
 
 
