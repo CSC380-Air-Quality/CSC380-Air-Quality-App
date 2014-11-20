@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.mustard.airqualityapplication" >
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="com.example.mustard.airqualityapplication.android.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <permission android:name="com.example.mustard.airqualityapplication.android.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
+    <application
+    android:allowBackup="true"
+    android:icon="@drawable/aircastingapp_transparentsm3"
+    android:label="@string/app_name"
+    android:theme="@style/CustomActionBarTheme" >
+        <!--android:theme="@style/AppTheme" > -->
+        <activity
+            android:name=".MyActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".InfoListActivity"
+            android:label="@string/title_info_list" >
+        </activity>
+        <activity
+            android:name=".InfoDetailActivity"
+            android:label="@string/title_info_detail"
+            android:parentActivityName=".InfoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mustard.airqualityapplication.InfoListActivity" />
+        </activity>
+        <activity
+            android:name=".SettingsListActivity"
+            android:label="@string/title_settings_list" >
+        </activity>
+        <activity
+            android:name=".SettingsDetailActivity"
+            android:label="@string/title_settings_detail"
+            android:parentActivityName=".SettingsListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mustard.airqualityapplication.SettingsListActivity" />
+        </activity>
+        <activity
+            android:name=".ExistingSessionListActivity"
+            android:label="@string/title_existingsession_list" >
+        </activity>
+        <activity
+            android:name=".ExistingSessionDetailActivity"
+            android:label="@string/title_existingsession_detail"
+            android:parentActivityName=".ExistingSessionListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mustard.airqualityapplication.ExistingSessionListActivity" />
+        </activity>
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAzk-mXQ76thJFpAdfWYZ89HPnEZHTQ_AU" />
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+
+</manifest>

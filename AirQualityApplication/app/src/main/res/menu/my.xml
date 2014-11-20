@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MyActivity"
+    android:theme="@style/CustomActionBarTheme">
+
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:icon="@drawable/settingsicon"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:onClick="showSetting"/>
+
+
+    <item android:id="@+id/action_info"
+        android:title="@string/action_info"
+        android:orderInCategory="90"
+        android:showAsAction="always"
+        android:onClick="showInfo"/>
+
+</menu>

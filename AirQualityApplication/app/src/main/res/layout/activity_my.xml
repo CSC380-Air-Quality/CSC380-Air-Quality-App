@@ -1,0 +1,132 @@
+<android.support.v4.app.FragmentTabHost
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="0.25">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="NO2\nTest"
+                    android:gravity="center"
+                    android:id="@+id/tvNo"
+                    android:background="@drawable/border"/>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="0.25">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="CO\nTest"
+                    android:gravity="center"
+                    android:id="@+id/tvCo"
+                    android:background="@drawable/border"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="0.25">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Temperature\nTest"
+                    android:gravity="center"
+                    android:id="@+id/tvTemp"
+                    android:background="@drawable/border"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="0.25">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Humidity\nTest"
+                    android:gravity="center"
+                    android:id="@+id/tvHumid"
+                    android:background="@drawable/border"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0"/>
+
+        <FrameLayout
+            android:id="@+id/realtabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/bordertopbottom">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_weight="0.40"
+                android:layout_gravity="center"
+                android:layout_height="72dp"
+                android:text="Start Session"
+                android:id="@+id/btnLeft"
+                android:background="@drawable/buttonbar"
+                android:textColor="@color/white"
+                android:textSize="10pt"
+                android:textStyle="bold"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_weight="0.40"
+                android:layout_gravity="center"
+                android:layout_height="72dp"
+                android:text="Existing Sessions"
+                android:id="@+id/btnRight"
+                android:background="@drawable/buttonbar"
+                android:textColor="@color/white"
+                android:textSize="10pt"
+                android:textStyle="bold"/>
+
+            </LinearLayout>
+    </LinearLayout>
+
+</android.support.v4.app.FragmentTabHost>
