@@ -3,6 +3,7 @@ package com.example.mustard.airqualityapplication;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.Handler;
 import android.widget.TextView;
 
@@ -11,6 +12,13 @@ import java.util.Date;
 
 /**
  * Created by Mark Williams on 10/25/2014.
+ */
+/*
+*Brandon Agostinelli
+*Keith Fosmire
+*Alexander Piechowicz-Merlizzi
+*Douglas Sherwood
+*Mark Williams
  */
 public class Session {
     private ArrayList<LocationDataPoint> alData;
@@ -35,10 +43,11 @@ public class Session {
     private Cursor c;
     private String strNote;
     private boolean bInSession = false;
+    public Location loc;
     /**
      *Constructor
      */
-    public Session(Activity actIn, TextView tvNoIn, TextView tvCoIn, TextView tvTempIn, TextView tvHumidIn){
+    public Session(Activity actIn, TextView tvNoIn, TextView tvCoIn, TextView tvTempIn, TextView tvHumidIn, Location locIn){
         this.alData = new ArrayList<LocationDataPoint>();
         this.alLocationId = new ArrayList<Integer>();
         this.bNewData = false;
@@ -55,6 +64,7 @@ public class Session {
         this.handler = new Handler();
         this.dbHandler = new DataHandler(actIn);
         this.database = dbHandler.getWritableDatabase();
+        this.loc = locIn;
         //String tempString =
 
     }
@@ -86,7 +96,9 @@ public class Session {
             c.close();
 
             //save location info
-            database.execSQL("INSERT INTO location (id, xAxis, yAxis)VALUES(" + intLocationID + ", \"" + dataPointIn.getX() + "\", \"" + dataPointIn.getY() + "\" );");
+            System.out.println("Lat: " + loc.getLatitude());
+            System.out.println("Long: " + loc.getLongitude());
+            database.execSQL("INSERT INTO location (id, xAxis, yAxis)VALUES(" + intLocationID + ", \"" + loc.getLatitude() + "\", \"" + loc.getLongitude() + "\" );");
 
             //add air sample infor
             //create a new air sample
@@ -231,4 +243,14 @@ public class Session {
         this.strZip = strIn;
     }
 
+    public synchronized LocationDataPoint getDataPoint() {
+        if (alData.size() > 0 && intLastUsed > -1) {
+            if (intLastUsed < alData.size()) {
+                return alData.get(intLastUsed);
+            } else {
+                return alData.get(alData.size() - 1);
+            }
+        }
+        return new LocationDataPoint(0, 0, 0, 0);
+    }
 }

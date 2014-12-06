@@ -1,5 +1,11 @@
 package com.example.mustard.airqualityapplication;
-
+/*
+*Brandon Agostinelli
+*Keith Fosmire
+*Alexander Piechowicz-Merlizzi
+*Douglas Sherwood
+*Mark Williams
+ */
 import android.app.Dialog;
 import android.location.Criteria;
 import android.location.Location;

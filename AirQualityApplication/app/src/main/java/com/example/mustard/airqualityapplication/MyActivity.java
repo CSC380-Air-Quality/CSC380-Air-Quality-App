@@ -1,11 +1,21 @@
 package com.example.mustard.airqualityapplication;
 
+/*
+*Brandon Agostinelli
+*Keith Fosmire
+*Alexander Piechowicz-Merlizzi
+*Douglas Sherwood
+*Mark Williams
+ */
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -22,6 +32,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +46,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jjoe64.graphview.BarGraphView;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GraphViewDataInterface;
+import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.LineGraphView;
+import com.jjoe64.graphview.ValueDependentColor;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -65,6 +83,18 @@ public class MyActivity extends FragmentActivity {
     private boolean bMap = false;
     private boolean bFirstRun = true;
     private Location loc;
+    private LocationManager locationManager;
+    private GraphViewSeries.GraphViewSeriesStyle seriesStyle;
+    GraphViewSeries noSeries;
+    GraphViewSeries coSeries;
+    GraphView graphView;
+    GraphView lineGraphView;
+    GraphViewSeries lineNoSeries;
+    GraphViewSeries lineCoSeries;
+    GraphViewSeries lineTempSeries;
+    GraphViewSeries linehumidSeries;
+    int counter = 1;
+
     /*
     DataQueue queue = new DataQueue();
         Session session = new Session();
@@ -81,6 +111,16 @@ public class MyActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+        loc = locationManager.getLastKnownLocation(provider);
+
+        //graph stuff
+        seriesStyle = new GraphViewSeries.GraphViewSeriesStyle();
+
+
         builder = new AlertDialog.Builder(this);
         inflator = this.getLayoutInflater();
         btnLeft = (Button) findViewById(R.id.btnLeft);
@@ -96,19 +136,54 @@ public class MyActivity extends FragmentActivity {
         th.addTab(th.newTabSpec("tab3").setIndicator("Graph"), GraphTab.class, null);
         th.setCurrentTab(1);
 
+        th.setOnTabChangedListener(new TabHost.OnTabChangeListener(){
+            public void onTabChanged(String tabId){
+                System.out.println("Selected Tab: " + th.getCurrentTab());
+                if(th != null){
+                    if(th.getCurrentTab() == 0){
+                        bMap = true;
+                    }else if(th.getCurrentTab() == 1){
+                        System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        if(googleMap != null) {
+                            googleMap.clear();
+                        }
+                        System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        setUpBarGraphStuff();
+
+
+                    }else if(th.getCurrentTab() == 2){
+                        if(googleMap != null) {
+                            googleMap.clear();
+
+                        }
+                        setUpLineGraph();
+
+                    }else{
+                        if(googleMap != null) {
+                            googleMap.clear();
+                        }
+
+
+                    }
+                }else{
+                    System.out.println("NULL TAB HOST");
+                }
+            }
+        });
+
         tvNo = (TextView) findViewById(R.id.tvNo);
         tvCo = (TextView) findViewById(R.id.tvCo);
         tvTemp = (TextView) findViewById(R.id.tvTemp);
         tvHumid = (TextView) findViewById(R.id.tvHumid);
 
+        setUpBarGraphStuff();
         //Make data queue stuff
         dataQueue = new DataQueue();
-        mainSession = new Session(this, tvNo,tvCo,tvTemp,tvHumid);
+        mainSession = new Session(this, tvNo,tvCo,tvTemp,tvHumid, loc);
         mainGraph = new Graph();
         sessionThread = new SessionThread(mainSession);
         ioThread = new IOThread(dataQueue);
         queueThread = new DataQueueThread(mainSession,mainGraph,dataQueue);
-
         ioThread.start();
         queueThread.start();
         sessionThread.start();
@@ -138,6 +213,68 @@ public class MyActivity extends FragmentActivity {
             }
         };
         thread.start();
+
+        Thread graphUpdater = new Thread(){
+          public void run(){
+              for(;;){
+                  try{
+                      //This is how we control how often we generate a new data point
+                      this.sleep(4000);
+                  }catch(InterruptedException ie){
+
+                  }
+
+                  if(graphView != null){
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            LocationDataPoint temp = mainSession.getDataPoint();
+                            noSeries.resetData(new GraphView.GraphViewData[]{
+                                    new GraphView.GraphViewData(1, temp.getNo())
+                                    , new GraphView.GraphViewData(2, temp.getCo())
+                                    , new GraphView.GraphViewData(3, temp.getTemp())
+                                    , new GraphView.GraphViewData(4, temp.getHumidity())
+
+                            });
+
+                            coSeries.resetData(new GraphView.GraphViewData[]{
+                                    new GraphView.GraphViewData(1, temp.getNo())
+                                    , new GraphView.GraphViewData(2, temp.getCo())
+                                    , new GraphView.GraphViewData(3, temp.getTemp())
+                                    , new GraphView.GraphViewData(4, temp.getHumidity())
+
+                            });
+
+                        }
+                    });
+                  }
+
+                  if(lineGraphView != null){
+                    Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable(){
+                        @Override
+                        public void run(){
+                            LocationDataPoint temp2 = mainSession.getDataPoint();
+                            counter ++;
+                            lineNoSeries.appendData(new GraphView.GraphViewData(counter, temp2.getNo()), true, 100);
+                            lineCoSeries.appendData(new GraphView.GraphViewData(counter, temp2.getCo()), true, 100);
+                            linehumidSeries.appendData(new GraphView.GraphViewData(counter, temp2.getHumidity()), true, 100);
+                            lineTempSeries.appendData(new GraphView.GraphViewData(counter, temp2.getTemp()), true, 100);
+                            //System.out.println("UPDATE");
+                            //System.out.println("COUNTER: " + counter);
+                            //System.out.println(temp2.getNo());
+                            //System.out.println(temp2.getCo());
+                            //System.out.println(temp2.getHumidity());
+                            //System.out.println(temp2.getTemp());
+
+                        }
+                      });
+                  }
+              }
+          }
+        };
+        graphUpdater.start();
 
     }
 
@@ -172,33 +309,40 @@ public class MyActivity extends FragmentActivity {
     }
 
 
-
     @Override
     public void onAttachFragment(android.support.v4.app.Fragment fragment){
         System.err.println("HERE SIR.");
         super.onAttachFragment(fragment);
-        if(th.getCurrentTab() == 0){
-            Toast toast = Toast.makeText(this,"Tesint", Toast.LENGTH_LONG);
-            toast.show();
-            bMap = true;
-            //runMap();
-        }else{
-            if(googleMap != null) {
-                googleMap.clear();
-            }
-        }
-        /*if(((Object)fragment).getClass() == HomeTab.class){
-            System.out.println("WE HAVE A FRAGMENT HOME");
-            Bundle arguments = new Bundle();
-            arguments.putString("strId","DATA");
-            HomeTab temp = new HomeTab();// (HomeTab)fragment;
-            temp.setArguments(arguments);
-            fragment = temp;
-            getSupportFragmentManager().beginTransaction().add(R.id.graphFragLayout, fragment).commit();
 
-        }else if (((Object)fragment).getClass() == GraphTab.class){
-            System.out.println("WE HAVE A FRAGMENT GRAPH");
-        }*/
+        //This is where an andAlso would have been great!
+        if(th != null){
+            if(th.getCurrentTab() == 0){
+                bMap = true;
+            }else if(th.getCurrentTab() == 1){
+                //System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                if(googleMap != null) {
+                    googleMap.clear();
+                }
+                //System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                //setUpBarGraphStuff();
+
+
+            }else if(th.getCurrentTab() == 2){
+                if(googleMap != null) {
+                    googleMap.clear();
+                }
+
+
+            }else{
+                if(googleMap != null) {
+                    googleMap.clear();
+                }
+
+
+            }
+        }else{
+            System.out.println("NULL TAB HOST");
+        }
     }
 
     private void setButtonListeners(){
@@ -210,16 +354,7 @@ public class MyActivity extends FragmentActivity {
                     //end the session
                     bInSession = false;
 
-                    /*Fragment curentFrag = getFragmentManager().findFragmentByTag("Home");
-                    if(curentFrag == null){
-                        System.out.println("Null");
-                    }else{
-                        System.out.println("Not NULL");
-                    }*/
-
-
                     HomeTab currentFrag = (HomeTab) getSupportFragmentManager().findFragmentById(R.id.realtabcontent);
-
 
                     if(currentFrag == null){
                         System.out.println("Null");
@@ -415,7 +550,6 @@ public class MyActivity extends FragmentActivity {
                 @Override
                 public void run(){
                     googleMap.setMyLocationEnabled(true);
-                    LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                     Criteria criteria = new Criteria();
                     String provider = locationManager.getBestProvider(criteria, true);
                     LocationListener locationListener = new LocationListener() {
@@ -454,41 +588,6 @@ public class MyActivity extends FragmentActivity {
                     }
                 }
             });
-            //googleMap.setMyLocationEnabled(true);
-            // LocationManager object from LOCATION_SERVICE
-            //LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            // Creating a criteria object to retrieve provider
-            //Criteria criteria = new Criteria();
-            // name of the best provider
-            //String provider = locationManager.getBestProvider(criteria, true);
-
-            /*LocationListener locationListener = new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    //draw marker on change
-                    drawMarker(location);
-                }
-
-
-                @Override
-                public void onStatusChanged(String s, int i, Bundle bundle) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String s) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String s) {
-
-                }
-
-            };*/
-
-            //locationManager.requestLocationUpdates(provider, 600000, 10, locationListener);
-
         }
     }
 
@@ -497,6 +596,162 @@ public class MyActivity extends FragmentActivity {
         LatLng currentSpot = new LatLng(loc.getLatitude(),loc.getLongitude());
         googleMap.addMarker(new MarkerOptions().position(currentSpot).snippet("Lat:" + loc.getLatitude() + "Lng:"+ loc.getLongitude()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title("ME"));
 
+    }
+
+    private void setUpBarGraphStuff(){
+        seriesStyle = new GraphViewSeries.GraphViewSeriesStyle();
+        seriesStyle.setValueDependentColor(new ValueDependentColor() {
+            @Override
+            public int get(GraphViewDataInterface data) {
+                if(data.getY() >= 75){
+                    return Color.rgb(191, 0, 0);
+                }else if(data.getY() >= 50){
+                    return Color.rgb(255,140,0);
+                }else if(data.getY() >= 25){
+                    return Color.rgb(229,229,0);
+                }else{
+                    return Color.rgb(0,127,0);
+                }
+            }
+        });
+
+        noSeries = new GraphViewSeries("NO",seriesStyle,new GraphView.GraphViewData[]{
+                //GraphViewSeries noSeries = new GraphViewSeries(new GraphView.GraphViewData[]{
+                new GraphView.GraphViewData(1, 0.0d)
+                , new GraphView.GraphViewData(2, 0.0d)
+                , new GraphView.GraphViewData(3, 0.0d)
+                , new GraphView.GraphViewData(4, 0.0d)
+        });
+
+        coSeries = new GraphViewSeries("NO",seriesStyle,new GraphView.GraphViewData[]{
+                //GraphViewSeries noSeries = new GraphViewSeries(new GraphView.GraphViewData[]{
+                new GraphView.GraphViewData(1, 0.0d)
+                , new GraphView.GraphViewData(2, 0.0d)
+                , new GraphView.GraphViewData(3, 0.0d)
+                , new GraphView.GraphViewData(4, 0.0d)
+        });
+
+        graphView = new BarGraphView(this,"");
+        graphView.getGraphViewStyle().setNumHorizontalLabels(4);
+        graphView.getGraphViewStyle().setNumVerticalLabels(10);
+        graphView.getGraphViewStyle().setVerticalLabelsWidth(100);
+        graphView.setManualYMinBound(0);
+        graphView.setManualYMaxBound(100.0);
+
+        graphView.setVerticalLabels(new String[]{"High","Med","Low"});
+        graphView.setHorizontalLabels(new String[]{"NO","CO2","Temp","Humid"});
+
+        graphView.addSeries(noSeries);
+        graphView.addSeries(coSeries);
+
+        //FragmentManager fm = (FragmentManager) findViewById(R.id.lyGrid);
+        Thread thread = new Thread(){
+            private boolean bRun = true;
+            public void run(){
+                while(bRun){
+                    try{
+                        //This is how we control how often we generate a new data point
+                        this.sleep(1000);
+                    }catch(InterruptedException ie){
+
+                    }
+
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable(){
+                        @Override
+                        public void run(){
+                            LinearLayout layout = (LinearLayout) th.findViewById(R.id.lyGrid);
+                            if(layout == null){
+                                System.err.println("null");
+                            }else {
+                                if(bRun) {
+                                    layout.removeView(graphView);
+                                    layout.addView(graphView);
+                                }
+                                bRun = false;
+                            }
+                        }
+                    });
+                }
+
+            }
+        };
+        thread.start();
+
+    }
+
+    private void setUpLineGraph(){
+        lineNoSeries = new GraphViewSeries("NO", new GraphViewSeries.GraphViewSeriesStyle(Color.rgb(255, 0, 0), 3), new GraphView.GraphViewData[]{
+                new GraphView.GraphViewData(1,0.0d)
+
+        });
+
+        lineCoSeries = new GraphViewSeries("CO2", new GraphViewSeries.GraphViewSeriesStyle(Color.rgb(0, 255, 0), 3), new GraphView.GraphViewData[]{
+                new GraphView.GraphViewData(1,0.0d)
+
+        });
+
+        lineTempSeries = new GraphViewSeries("Temp", new GraphViewSeries.GraphViewSeriesStyle(Color.rgb(0, 0, 255), 3), new GraphView.GraphViewData[]{
+                new GraphView.GraphViewData(1,0.0d)
+
+        });
+
+       linehumidSeries = new GraphViewSeries("Humid", new GraphViewSeries.GraphViewSeriesStyle(Color.rgb(93, 0, 73), 3), new GraphView.GraphViewData[]{
+                new GraphView.GraphViewData(1,0.0d)
+
+        });
+        lineGraphView = new LineGraphView(this,"");
+        lineGraphView.setScrollable(true);
+
+        lineGraphView.addSeries(lineNoSeries);
+
+        lineGraphView.addSeries(lineCoSeries);
+        lineGraphView.addSeries(lineTempSeries);
+        lineGraphView.addSeries(linehumidSeries);
+        lineGraphView.setTitle("");
+
+        lineGraphView.setVerticalLabels(new String[]{"High","Med","Low"});
+        lineGraphView.setHorizontalLabels(new String[]{"", "", ""});
+        lineGraphView.getGraphViewStyle().setNumHorizontalLabels(0);
+        lineGraphView.getGraphViewStyle().setNumVerticalLabels(3);
+        lineGraphView.getGraphViewStyle().setVerticalLabelsWidth(100);
+        lineGraphView.setShowLegend(true);
+        lineGraphView.setLegendAlign(GraphView.LegendAlign.TOP);
+        lineGraphView.isScrollable();
+        lineGraphView.setLegendWidth(200);
+
+        Thread thread = new Thread(){
+            private boolean bRun = true;
+            public void run(){
+                while(bRun){
+                    try{
+                        //This is how we control how often we generate a new data point
+                        this.sleep(1000);
+                    }catch(InterruptedException ie){
+
+                    }
+
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable(){
+                        @Override
+                        public void run(){
+                            LinearLayout layout = (LinearLayout) th.findViewById(R.id.graphFragLayout);
+                            if(layout == null){
+                                System.err.println("null");
+                            }else {
+                                if(bRun) {
+                                    layout.addView(lineGraphView);
+                                }
+                                bRun = false;
+                            }
+                        }
+                    });
+                }
+
+            }
+        };
+        thread.start();
+        System.out.println("Test Message");
     }
 
 }

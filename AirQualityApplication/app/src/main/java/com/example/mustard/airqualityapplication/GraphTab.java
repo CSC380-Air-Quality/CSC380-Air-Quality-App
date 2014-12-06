@@ -1,5 +1,11 @@
 package com.example.mustard.airqualityapplication;
-
+/*
+*Brandon Agostinelli
+*Keith Fosmire
+*Alexander Piechowicz-Merlizzi
+*Douglas Sherwood
+*Mark Williams
+ */
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -120,7 +126,7 @@ public class GraphTab extends Fragment {
         humidGraphView.setLegendWidth(200);*/
 
         LinearLayout layout = (LinearLayout) V.findViewById(R.id.graphFragLayout);
-        layout.addView(noGraphView);
+        //layout.addView(noGraphView);
         //layout.addView(coGraphView);
         //layout.addView(tempGraphView);
         //layout.addView(humidGraphView);

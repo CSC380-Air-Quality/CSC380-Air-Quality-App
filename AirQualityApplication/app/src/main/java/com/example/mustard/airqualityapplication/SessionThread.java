@@ -3,6 +3,13 @@ package com.example.mustard.airqualityapplication;
 /**
  * Created by Mark Williams on 10/25/2014.
  */
+/*
+*Brandon Agostinelli
+*Keith Fosmire
+*Alexander Piechowicz-Merlizzi
+*Douglas Sherwood
+*Mark Williams
+ */
 public class SessionThread extends Thread {
     protected Session mainSession;
     private boolean bRunning;

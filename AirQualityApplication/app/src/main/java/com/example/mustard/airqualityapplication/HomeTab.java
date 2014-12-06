@@ -1,5 +1,11 @@
 package com.example.mustard.airqualityapplication;
-
+/*
+*Brandon Agostinelli
+*Keith Fosmire
+*Alexander Piechowicz-Merlizzi
+*Douglas Sherwood
+*Mark Williams
+ */
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -85,7 +91,7 @@ public class HomeTab extends Fragment {
         if(layout == null){
             System.err.println("null");
         }else {
-            layout.addView(graphView);
+            //layout.addView(graphView);
         }
         //GraphVew graphVew = new LineGraphView(this, "GraphViewDemo");
 

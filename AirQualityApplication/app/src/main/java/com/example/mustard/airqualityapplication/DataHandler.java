@@ -3,6 +3,13 @@ package com.example.mustard.airqualityapplication;
 /**
  * Created by BlackHawk31 on 10/26/2014.
  */
+/*
+*Brandon Agostinelli
+*Keith Fosmire
+*Alexander Piechowicz-Merlizzi
+*Douglas Sherwood
+*Mark Williams
+ */
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

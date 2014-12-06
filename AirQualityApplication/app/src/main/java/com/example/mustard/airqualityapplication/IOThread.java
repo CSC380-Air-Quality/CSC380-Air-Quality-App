@@ -3,6 +3,13 @@ package com.example.mustard.airqualityapplication;
 /**
  * Created by Mark Williams on 10/25/2014.
  */
+/*
+*Brandon Agostinelli
+*Keith Fosmire
+*Alexander Piechowicz-Merlizzi
+*Douglas Sherwood
+*Mark Williams
+ */
 public class IOThread extends Thread {
 
     protected DataQueue queue;
@@ -43,7 +50,7 @@ public class IOThread extends Thread {
         while(bRunning){
             try{
                 //This is how we control how often we generate a new data point
-                this.sleep(1000);
+                this.sleep(4000);
             }catch(InterruptedException ie){
 
             }

@@ -3,6 +3,13 @@ package com.example.mustard.airqualityapplication;
 /**
  * Created by Mark Williams on 10/25/2014.
  */
+/*
+*Brandon Agostinelli
+*Keith Fosmire
+*Alexander Piechowicz-Merlizzi
+*Douglas Sherwood
+*Mark Williams
+ */
 public class DataQueueThread extends Thread {
 
     protected Session mainSession;
