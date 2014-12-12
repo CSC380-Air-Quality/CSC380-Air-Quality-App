@@ -52,7 +52,7 @@ public class GPS extends Activity{
        if (!onGPS()) {
 
             //Have option to enter in location information
-            //setContentView(R.layout.activity_myactivity);
+            setContentView(R.layout.activity_myactivity);
             final Button openInputWindow = (Button) findViewById(R.id.openuserinput);
             openInputWindow.setOnClickListener(new Button.OnClickListener() {
                 @Override
